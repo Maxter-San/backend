@@ -42,7 +42,7 @@ async function signUp(req: Request, res: Response){
 /*
 async login() {
     const options = {
-        method: 'GET',
+        method: 'POST',
         Headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             userName: 'maxter',
@@ -53,5 +53,5 @@ async login() {
     const response = await fetch('http://http://localhost:3000/log-in', options);
     const data = await response.json();
 
-    //aqui chequen si se imprime la info
+    console.log(data);
 }*/

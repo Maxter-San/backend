@@ -73,12 +73,12 @@ app.post("/sign-up", (req, res) => __awaiter(void 0, void 0, void 0, function* (
         res.status(500).send({ error: true, "result": "Ocurrió un error durante el sign-up" });
     }
 }));
-app.get("/login/:userName/:password", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.post("/log-in", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userLog = yield prisma.user.findFirst({
             where: {
-                userName: req.params.userName,
-                password: req.params.password,
+                userName: req.body.userName,
+                password: req.body.password,
             },
         });
         if (!userLog) {
