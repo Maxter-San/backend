@@ -1,0 +1,125 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+//npm prisma migrate
+//npm prisma generate
+//npx prisma studio
+
+model User {
+  userId        Int         @id @default(autoincrement())
+  creationDate  DateTime    @default(now())
+  isActive      Boolean     @default(true)
+  userName      String      @unique
+  password      String
+  email          String      @unique
+  profilePhoto  String
+  coverPhoto    String
+  name          String
+  gender        String
+  birthDate     DateTime
+  description   String?
+  paypalLink    String?
+  twitterLink   String?
+  facebookLink  String?
+
+  draws         Draw[]
+  comment       Comment[]
+  bookmark      Bookmark[]
+  message       Message[]
+
+  followerUser  FollowUser[] @relation("follower")
+  followedUser  FollowUser[] @relation("followed")
+
+  sender        Chat[]      @relation("sender")
+  receiver      Chat[]      @relation("receiver")
+}
+
+model Draw {
+  drawId        Int         @id @default(autoincrement())
+  creationDate  DateTime    @default(now())
+  isActive      Boolean     @default(true)
+  draw          String
+  title         String
+  description   String
+  restrict18    Boolean
+  isPublic      Boolean
+
+  user          User       @relation(fields: [userId], references: [userId])
+  userId        Int
+
+  drawTag       DrawTag[]
+  comment       Comment[]
+  bookmark      Bookmark[]
+}
+
+model Tag {
+  tagId         Int         @id @default(autoincrement())
+  name          String
+
+  drawTag       DrawTag[]
+}
+
+model DrawTag {
+  draw          Draw        @relation(fields: [drawId], references: [drawId])
+  drawId        Int
+  tag           Tag         @relation(fields: [tagId], references: [tagId])
+  tagId         Int
+  @@id([drawId, tagId])
+}
+
+model Comment {
+  commentId     Int         @id @default(autoincrement())
+  comment       String
+  user          User        @relation(fields: [userId], references: [userId])
+  userId        Int
+  draw          Draw        @relation(fields: [drawId], references: [drawId])
+  drawId        Int
+}
+
+model Bookmark {
+  bookmark      Int         @id @default(autoincrement())
+  creationDate  DateTime    @default(now())
+  user          User        @relation(fields: [userId], references: [userId])
+  userId        Int
+  draw          Draw        @relation(fields: [drawId], references: [drawId])
+  drawId        Int
+}
+
+model FollowUser {
+  follower      User        @relation(fields: [followerId], references: [userId], name: "follower")
+  followerId    Int
+  followedUser  User        @relation(fields: [followedUserId], references: [userId], name: "followed")
+  followedUserId  Int
+  @@id([followerId, followedUserId])
+}
+
+model Chat {
+  chatId        Int         @id @default(autoincrement())
+
+  creationDate  DateTime    @default(now())
+  sender        User        @relation(fields: [senderId], references: [userId], name: "sender")
+  senderId      Int
+  receiver      User        @relation(fields: [receiverId], references: [userId], name: "receiver")
+  receiverId    Int
+  message       Message[]
+}
+
+model Message {
+  messageId     Int         @id @default(autoincrement())
+  creationDate  DateTime    @default(now())
+  message       String
+
+  chat          Chat        @relation(fields: [chatId], references: [chatId])
+  chatId        Int
+  user          User        @relation(fields: [userId], references: [userId])
+  userId        Int
+}
