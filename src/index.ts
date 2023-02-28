@@ -74,7 +74,7 @@ app.post("/sign-up", async (req, res) => {
 });
 
 
-app.get("/log-in/", async (req, res) => {
+app.post("/log-in", async (req, res) => {
     try {
         const userLog = await prisma.user.findFirst({
             where: {
@@ -84,9 +84,9 @@ app.get("/log-in/", async (req, res) => {
         });
 
         if(!userLog){
-            res.status(500).send({
+            res.status(400).send({
                 error: true,
-                "result": "usuario o contraseña incorrectos",
+                "result": "Usuario o contraseña incorrectos.",
             });
             return;
         }
@@ -95,10 +95,11 @@ app.get("/log-in/", async (req, res) => {
 
     }
     catch {
-        res.status(500).send({ error: true, "result": "Ocurrió un error durante el log-in" });
+        res.status(500).send({ error: true, "result": "Ocurrió un error durante el log-in." });
 
     }
 });
+
 
 /////////////////////////////////// UWU ////////////////////////////////////
 

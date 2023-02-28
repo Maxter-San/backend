@@ -23,7 +23,7 @@ app.use(body_parser_1.default.json());
 const PORT = Number(process.env.PORT || 8080);
 const prisma = new client_1.PrismaClient();
 app.use('/prisma', (0, express_prisma_studio_1.PrismaStudioMiddleware)(prisma));
-///////////////////////// Aquí inician las peticiones / endpoints /////////////////////
+///////////////////////// Aquí inician los endpoints /////////////////////
 app.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const users = yield prisma.user.findMany();
     res.send('hola mundo');
@@ -73,25 +73,25 @@ app.post("/sign-up", (req, res) => __awaiter(void 0, void 0, void 0, function* (
         res.status(500).send({ error: true, "result": "Ocurrió un error durante el sign-up" });
     }
 }));
-app.get("/log-in/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.get("/login/:userName/:password", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userLog = yield prisma.user.findFirst({
             where: {
-                userName: req.body.userName,
-                password: req.body.password,
+                userName: req.params.userName,
+                password: req.params.password,
             },
         });
         if (!userLog) {
-            res.status(500).send({
+            res.status(400).send({
                 error: true,
-                "result": "usuario o contraseña incorrectos",
+                "result": "Usuario o contraseña incorrectos.",
             });
             return;
         }
         res.status(200).send({ userLog });
     }
     catch (_b) {
-        res.status(500).send({ error: true, "result": "Ocurrió un error durante el log-in" });
+        res.status(500).send({ error: true, "result": "Ocurrió un error durante el log-in." });
     }
 }));
 /////////////////////////////////// UWU ////////////////////////////////////
