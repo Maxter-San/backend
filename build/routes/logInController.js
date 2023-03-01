@@ -12,27 +12,28 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const cors_1 = __importDefault(require("cors"));
-const body_parser_1 = __importDefault(require("body-parser"));
-const express_prisma_studio_1 = require("express-prisma-studio");
-const prisma_1 = __importDefault(require("./prisma"));
-const routes_1 = __importDefault(require("./routes"));
-const PORT = Number(process.env.PORT || 8080);
-function main() {
+const prisma_1 = __importDefault(require("../prisma"));
+function logInController(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const app = (0, express_1.default)();
-        app.use(express_1.default.json());
-        app.use((0, cors_1.default)());
-        app.use(body_parser_1.default.json());
-        app.use('/prisma', (0, express_prisma_studio_1.PrismaStudioMiddleware)(prisma_1.default));
-        app.use(routes_1.default);
-        app.listen(PORT, () => {
-            const host = `http://localhost:${PORT}/`;
-            console.log(`Backend listo: ${host}`);
-        });
+        try {
+            const userLog = yield prisma_1.default.user.findFirst({
+                where: {
+                    userName: req.body.userName,
+                    password: req.body.password,
+                },
+            });
+            if (!userLog) {
+                res.status(400).send({
+                    error: true,
+                    "result": "Usuario o contraseña incorrectos.",
+                });
+                return;
+            }
+            res.status(200).send({ userLog });
+        }
+        catch (_a) {
+            res.status(500).send({ error: true, "result": "Ocurrió un error durante el log-in." });
+        }
     });
 }
-main();
-//npm run build
-//npm run start
+exports.default = logInController;
