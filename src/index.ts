@@ -19,9 +19,9 @@ async function main() {
       const host = `http://localhost:${PORT}/`;
       console.log(`Backend listo: ${host}`);
     });
-  }
+}
   
-  main();
+main();
 
 //npm run build
 //npm run start

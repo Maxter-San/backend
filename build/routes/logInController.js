@@ -32,7 +32,7 @@ function logInController(req, res) {
             res.status(200).send({ userLog });
         }
         catch (_a) {
-            res.status(500).send({ error: true, "result": "Ocurrió un error durante el log-in." });
+            res.status(401).send({ error: true, "result": "Ocurrió un error durante el log-in." });
         }
     });
 }

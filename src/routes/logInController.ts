@@ -22,7 +22,7 @@ export default async function logInController(req: Request, res: Response) {
 
     }
     catch {
-        res.status(500).send({ error: true, "result": "Ocurrió un error durante el log-in." });
+        res.status(401).send({ error: true, "result": "Ocurrió un error durante el log-in." });
 
     }
 }
