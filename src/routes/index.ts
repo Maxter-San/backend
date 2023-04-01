@@ -12,6 +12,6 @@ routes.get('/', (req, res) => res.send('Backend is ready'));
 
 routes.post('/login', logInController);
 routes.post('/signup', signUpController);
-routes.post('/uploadFile', upload.single('fotito'), uploadFileController);
+routes.post('/uploadFile', upload.single('foto'), uploadFileController);
 
 export default routes;

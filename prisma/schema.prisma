@@ -14,6 +14,11 @@ datasource db {
 //npm prisma generate
 //npx prisma studio
 
+//npx prisma migrate reset
+//npx prisma migrate dev
+//npx prisma db pull
+//npx prisma migrate dev --name introspected_change
+
 model User {
   userId        Int         @id @default(autoincrement())
   creationDate  DateTime    @default(now())
@@ -30,11 +35,13 @@ model User {
   paypalLink    String?
   twitterLink   String?
   facebookLink  String?
+  isPremium     Boolean     @default(false)
 
   draws         Draw[]
   comment       Comment[]
   bookmark      Bookmark[]
   message       Message[]
+  membership    Premium[]
 
   followerUser  FollowUser[] @relation("follower")
   followedUser  FollowUser[] @relation("followed")
@@ -69,7 +76,7 @@ model Tag {
 }
 
 model DrawTag {
-  draw          Draw        @relation(fields: [drawId], references: [drawId])
+  drawod        Draw        @relation(fields: [drawId], references: [drawId])
   drawId        Int
   tag           Tag         @relation(fields: [tagId], references: [tagId])
   tagId         Int
@@ -86,7 +93,7 @@ model Comment {
 }
 
 model Bookmark {
-  bookmark      Int         @id @default(autoincrement())
+  bookmarkId    Int         @id @default(autoincrement())
   creationDate  DateTime    @default(now())
   user          User        @relation(fields: [userId], references: [userId])
   userId        Int
@@ -120,6 +127,15 @@ model Message {
 
   chat          Chat        @relation(fields: [chatId], references: [chatId])
   chatId        Int
+  user          User        @relation(fields: [userId], references: [userId])
+  userId        Int
+}
+
+model Premium {
+  premiumId     Int         @id @default(autoincrement())
+  creationDate  DateTime    @default(now())
+  expirationDate DateTime
+
   user          User        @relation(fields: [userId], references: [userId])
   userId        Int
 }
