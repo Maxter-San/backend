@@ -8,8 +8,9 @@ export default async function signUpController(req: Request, res: Response) {
                 email: req.body.email,
             },
         });
+        console.log(existentEmail);
         if(existentEmail){
-            res.status(500).send({
+            res.status(400).send({
                 error: true,
                 "result": "Email ya registrado",
             });
@@ -22,7 +23,7 @@ export default async function signUpController(req: Request, res: Response) {
             },
         });
         if(existentUserName){
-            res.status(500).send({
+            res.status(400).send({
                 error: true,
                 "result": "Nombre de usuario ya registrado",
             });
@@ -42,8 +43,8 @@ export default async function signUpController(req: Request, res: Response) {
             }
         });
 
-        //res.send({ newUser });
-        res.status(200).send({ "result": "Usuario agregado con exito"});
+        //res.send({ "result": "Usuario agregado con exito" });
+        res.status(200).send({ newUser });
     }
     catch {
         res.status(500).send({ error: true, "result": "Ocurrió un error durante el sign-up" });

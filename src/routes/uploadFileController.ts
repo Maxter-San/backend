@@ -4,7 +4,7 @@ import uploadFile from '../utils/uploadFile';
 
 export default async function uploadFileController(req: Request, res: Response) {
     if(!req.file){
-        res.status(500).send({
+        res.status(555).send({
             error: true,
             "result": "archivo requerido",
         });
@@ -17,7 +17,7 @@ export default async function uploadFileController(req: Request, res: Response) 
         req.file.mimetype,
         req.file.originalname,
     )
-    res.send(url);
+    res.status(200).send({ url });
     } catch (error) {
     res.status(500).send(error);
     }
