@@ -3,7 +3,6 @@ import prisma from '../prisma';
 
 export default async function logInController(req: Request, res: Response) {
     try {
-        
         const userLog = await prisma.user.findFirst({
             where: {
                 userName: req.body.userName,
