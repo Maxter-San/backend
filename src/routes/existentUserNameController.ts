@@ -8,6 +8,7 @@ export default async function existentUserNameController(req: Request, res: Resp
                 userName: req.body.userName,
             },
         });
+        
         if(existentUserName){
             res.status(400).send({
                 error: true,

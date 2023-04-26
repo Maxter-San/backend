@@ -44,10 +44,10 @@ export default async function signUpController(req: Request, res: Response) {
         });
 
         //res.send({ "result": "Usuario agregado con exito" });
-        res.status(200).send({ newUser });
+        res.status(200).send({ newUser, "result": "¡Usuario agregado con exito!" });
     }
     catch {
-        res.status(500).send({ error: true, "result": "Ocurrió un error durante el sign-up" });
+        res.status(500).send({ error: true, "result": "Ocurrió un error durante el sign-up." });
 
     }
 }

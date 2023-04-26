@@ -8,7 +8,7 @@ export default async function existentMailController(req: Request, res: Response
                 email: req.body.email,
             },
         });
-        console.log(existentEmail);
+        
         if(existentEmail){
             res.status(400).send({
                 error: true,
