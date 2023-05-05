@@ -1,12 +1,24 @@
 import { Request, Response } from "express";
 import prisma from '../prisma';
+import tokenValidation from "../utils/tokenValidation";
 
 export default async function getUserController(req: Request, res: Response) {
     try {
-        if(!req.body.token){
+        const token = req.headers.token as any;
+
+        if(!token){
             res.status(400).send({
                 error: true,
                 "result": "Falta de token.",
+            });
+            return;
+        }
+
+        const tokenValid = await tokenValidation(token);
+        if(!tokenValid){
+            res.status(400).send({
+                error: true,
+                "result": "Token invalido.",
             });
             return;
         }
@@ -18,14 +30,14 @@ export default async function getUserController(req: Request, res: Response) {
                 userId: Number(userId),
                 tokenLog: {
                     some: {
-                        token: req.body.token,
+                        token: token,
                     }
                 },
             },
             include:{
                 tokenLog: {
                     where: {
-                        token: req.body.token,
+                        token: token,
                     },
                 },
             },
