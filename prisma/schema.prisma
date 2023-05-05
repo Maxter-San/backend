@@ -10,8 +10,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-//npm prisma migrate
-//npm prisma generate
+//npx prisma migrate
+//npx prisma generate
 //npx prisma studio
 
 //npx prisma migrate reset
@@ -40,14 +40,12 @@ model User {
   draws         Draw[]
   comment       Comment[]
   bookmark      Bookmark[]
-  message       Message[]
   membership    Premium[]
+  tokenLog      TokenLog[]
 
   followerUser  FollowUser[] @relation("follower")
   followedUser  FollowUser[] @relation("followed")
 
-  sender        Chat[]      @relation("sender")
-  receiver      Chat[]      @relation("receiver")
 }
 
 model Draw {
@@ -109,28 +107,6 @@ model FollowUser {
   @@id([followerId, followedUserId])
 }
 
-model Chat {
-  chatId        Int         @id @default(autoincrement())
-
-  creationDate  DateTime    @default(now())
-  sender        User        @relation(fields: [senderId], references: [userId], name: "sender")
-  senderId      Int
-  receiver      User        @relation(fields: [receiverId], references: [userId], name: "receiver")
-  receiverId    Int
-  message       Message[]
-}
-
-model Message {
-  messageId     Int         @id @default(autoincrement())
-  creationDate  DateTime    @default(now())
-  message       String
-
-  chat          Chat        @relation(fields: [chatId], references: [chatId])
-  chatId        Int
-  user          User        @relation(fields: [userId], references: [userId])
-  userId        Int
-}
-
 model Premium {
   premiumId     Int         @id @default(autoincrement())
   creationDate  DateTime    @default(now())
@@ -138,4 +114,12 @@ model Premium {
 
   user          User        @relation(fields: [userId], references: [userId])
   userId        Int
+}
+
+model TokenLog {
+  token         String      @id
+  user          User        @relation(fields: [userId], references: [userId])
+  userId        Int
+  creationDate  DateTime    @default(now())
+  temporal      Boolean
 }

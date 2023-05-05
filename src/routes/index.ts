@@ -6,6 +6,7 @@ import existentUserNameController from './existentUserNameController';
 import uploadFileController from './uploadFileController';
 import multer from 'multer';
 import getUserController from './getUserController';
+import logOutController from './logOutController';
 
 const routes = Router();
 const storage = multer.memoryStorage();
@@ -15,6 +16,7 @@ routes.get('/', (req, res) => res.send('Backend is ready'));
 
 routes.post('/login', logInController);
 routes.post('/signup', signUpController);
+routes.post('/logout', logOutController);
 routes.post('/getUser', getUserController);
 routes.post('/existentMail', existentMailController);
 routes.post('/existentUserName', existentUserNameController);

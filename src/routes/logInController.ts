@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import prisma from '../prisma';
+import createToken from "../utils/newToken";
+//import findTokenByUserId from "../utils/findTokenByUserId";
 
 export default async function logInController(req: Request, res: Response) {
     try {
@@ -18,7 +20,19 @@ export default async function logInController(req: Request, res: Response) {
             return;
         }
 
-        res.status(200).send({ userLog });
+        /*if(await findTokenByUserId(userLog.userId) !== null){
+            res.status(400).send({
+                error: true,
+                "result": "Usuario ya logeado.",
+            });
+            return;
+        }*/
+
+        const token = await createToken(userLog.userId, req.body.isTemp);
+
+        const user = {"userId" : userLog.userId, "token" : token};
+
+        res.status(200).send({ user });
 
     }
     catch {
