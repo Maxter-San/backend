@@ -20,6 +20,14 @@ export default async function logInController(req: Request, res: Response) {
             return;
         }
 
+        if(!userLog.isActive){
+            res.status(400).send({
+                error: true,
+                "result": "Usuario eliminado.",
+            });
+            return;
+        }
+
         /*if(await findTokenByUserId(userLog.userId) !== null){
             res.status(400).send({
                 error: true,

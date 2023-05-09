@@ -28,6 +28,7 @@ export default async function getUserController(req: Request, res: Response) {
         const userLog = await prisma.user.findFirst({
             where: {
                 userId: Number(userId),
+                isActive: true,
                 tokenLog: {
                     some: {
                         token: token,
@@ -56,8 +57,8 @@ export default async function getUserController(req: Request, res: Response) {
         if(userLog.tokenLog[0].temporal === true){
             const dateNow = new Date(Date.now());
             const dateCreation = userLog.tokenLog[0].creationDate;
-            dateCreation.setDate(dateCreation.getDay() + 1);
-
+            dateCreation.setDate(dateCreation.getDate() + 1);
+            
             if(dateNow >= dateCreation){
                 res.status(400).send({
                     error: true,

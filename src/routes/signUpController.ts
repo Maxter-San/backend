@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import prisma from '../prisma';
+import createToken from "../utils/newToken";
 
 export default async function signUpController(req: Request, res: Response) {
     try {
@@ -43,8 +44,12 @@ export default async function signUpController(req: Request, res: Response) {
             }
         });
 
+        const token = await createToken(newUser.userId, false);
+
+        const user = { "userId" : newUser.userId, "token" : token }
+
         //res.send({ "result": "Usuario agregado con exito" });
-        res.status(200).send({ newUser, "result": "¡Usuario agregado con exito!" });
+        res.status(200).send({ user, "result": "¡Usuario agregado con exito!" });
     }
     catch {
         res.status(500).send({ error: true, "result": "Ocurrió un error durante el sign-up." });
