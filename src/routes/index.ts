@@ -9,6 +9,8 @@ import getUserController from './getUserController';
 import logOutController from './logOutController';
 import editProfileController from './editProfileController';
 import deleteUserController from './deleteUserController';
+import uploadDrawController from './uploadDraw';
+import uploadDrawTagsController from './uploadDrawTags';
 
 const routes = Router();
 const storage = multer.memoryStorage();
@@ -24,6 +26,10 @@ routes.post('/editProfile', editProfileController);
 routes.post('/deleteUser', deleteUserController);
 routes.post('/existentMail', existentMailController);
 routes.post('/existentUserName', existentUserNameController);
+
+routes.post('/uploadDraw', uploadDrawController);
+routes.post('/uploadDrawTags', uploadDrawTagsController);
+
 routes.post('/uploadFile', upload.single('foto'), uploadFileController);
 
 export default routes;

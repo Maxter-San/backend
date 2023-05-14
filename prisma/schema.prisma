@@ -67,8 +67,7 @@ model Draw {
 }
 
 model Tag {
-  tagId         Int         @id @default(autoincrement())
-  name          String
+  tagName          String      @id
 
   drawTag       DrawTag[]
 }
@@ -76,9 +75,9 @@ model Tag {
 model DrawTag {
   drawod        Draw        @relation(fields: [drawId], references: [drawId])
   drawId        Int
-  tag           Tag         @relation(fields: [tagId], references: [tagId])
-  tagId         Int
-  @@id([drawId, tagId])
+  tag           Tag         @relation(fields: [tagName], references: [tagName])
+  tagName       String
+  @@id([drawId, tagName])
 }
 
 model Comment {
