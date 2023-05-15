@@ -54,7 +54,7 @@ model Draw {
   isActive      Boolean     @default(true)
   draw          String
   title         String
-  description   String
+  description   String?
   restrict18    Boolean
   isPublic      Boolean
 

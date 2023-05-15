@@ -11,6 +11,8 @@ import editProfileController from './editProfileController';
 import deleteUserController from './deleteUserController';
 import uploadDrawController from './uploadDraw';
 import uploadDrawTagsController from './uploadDrawTags';
+import drawsController from './drawsController';
+import tagsController from './tagsController';
 
 const routes = Router();
 const storage = multer.memoryStorage();
@@ -29,6 +31,9 @@ routes.post('/existentUserName', existentUserNameController);
 
 routes.post('/uploadDraw', uploadDrawController);
 routes.post('/uploadDrawTags', uploadDrawTagsController);
+routes.get('/draws', drawsController);
+
+routes.get('/tags', tagsController);
 
 routes.post('/uploadFile', upload.single('foto'), uploadFileController);
 
