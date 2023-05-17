@@ -87,6 +87,7 @@ model Comment {
   userId        Int
   draw          Draw        @relation(fields: [drawId], references: [drawId])
   drawId        Int
+  creationDate  DateTime    @default(now())
 }
 
 model Bookmark {

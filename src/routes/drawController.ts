@@ -1,17 +1,16 @@
 import { Request, Response } from "express";
 import prisma from '../prisma';
 
-export default async function drawsController(req: Request, res: Response) {
+export default async function drawController(req: Request, res: Response) {
     try {
         const token = req.headers.token as any;
         const userId = req.query.userId;
+        const drawId = Number(req.query.drawId);
         const conditions = [];
-        const limit = Number(req.query.limit) || undefined;
 
         conditions.push({
             isActive: true,
         });
-
         
         const userLog = await prisma.user.findFirst({
             where: {
@@ -53,33 +52,24 @@ export default async function drawsController(req: Request, res: Response) {
             });
         }
 
-        //if (req.query.name) {
-        //    conditions.push({
-        //        name: {
-        //            contains: req.query.search as any || undefined,
-        //        },
-        //    });
-        //}
-        if (req.query.filterUSerId) {
-            conditions.push({
-                userId: Number(req.query.filterUSerId),
-            });
-        }
+        conditions.push({
+            drawId: drawId,
+        });
 
-        const draws = await prisma.draw.findMany({
+        const draw = await prisma.draw.findFirst({
             where: {
                 AND: conditions.length ? conditions : undefined,
             },
-            orderBy: {
-                creationDate: req.query.orderBy as any || undefined,
+            include: {
+                user: true,
+                drawTag: true,
             },
-            take: limit,
         });
 
-        res.status(200).send({ "result": "Obtener dibujos funciona correctamente!", draws });
+        res.status(200).send({ "result": "Obtener dibujo funciona correctamente!", draw });
     }
     catch {
-        res.status(500).send({ error: true, "result": "Ocurrió un error durante el getDraws." });
+        res.status(500).send({ error: true, "result": "Ocurrió un error durante el getDraw." });
 
     }
 }
