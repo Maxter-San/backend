@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import prisma from '../prisma';
 import tokenValidation from "../utils/tokenValidation";
 
-export default async function getUserController(req: Request, res: Response) {
+export default async function getLogedUserController(req: Request, res: Response) {
     try {
         const token = req.headers.token as any;
 
