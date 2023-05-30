@@ -1,16 +1,15 @@
 import { Request, Response } from "express";
 import prisma from '../prisma';
 
-export default async function tagsController(req: Request, res: Response) {
+export default async function deletetagsController(req: Request, res: Response) {
     try {
         const token = req.headers.token as any;
-        const userId = req.query.userId;
-        const limit = Number(req.query.limit) || undefined;
-
+        const userId = Number(req.body.userId);
+        const drawId = Number(req.body.drawId);
         
         const userLog = await prisma.user.findFirst({
             where: {
-                userId: Number(userId),
+                userId: userId,
                 isActive: true,
                 tokenLog: {
                     some: {
@@ -35,27 +34,16 @@ export default async function tagsController(req: Request, res: Response) {
             return;
         }
 
-        const tags = await prisma.tag.findMany({
+        const tags = await prisma.drawTag.deleteMany({
             where: {
-                drawTag: {
-                    some: {},
-                }
+                drawId: drawId,
             },
-            orderBy: {
-                drawTag:{
-                    _count: req.query.orderBy as any || undefined,
-                },
-            },
-            include:{
-                drawTag: true,
-            },
-            take: limit,
         });
 
-        res.status(200).send({ "result": "Obtener tags funciona correctamente!", tags });
+        res.status(200).send({ "result": "Borrar tags funciona correctamente!", tags });
     }
     catch {
-        res.status(500).send({ error: true, "result": "Ocurrió un error durante el getTags." });
+        res.status(500).send({ error: true, "result": "Ocurrió un error durante el deleteTags." });
 
     }
 }
