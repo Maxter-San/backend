@@ -10,7 +10,11 @@ export default async function userStatisticsController(req: Request, res: Respon
             select: {
                 _count: {
                     select: {
-                        draws: true,
+                        draws: {
+                            where:{
+                                isActive: true
+                            },
+                        },
                         followerUser: true,
                         followedUser: true,
                     },
