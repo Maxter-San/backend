@@ -21,6 +21,8 @@ import getUserController from './getUser';
 import bookmarksController from './bookmarksController';
 import userStatisticsController from './userStatisticsController';
 import followController from './followController';
+import deleteArtworkController from './deleteArtworkController';
+import updateArtworkController from './updateArtworkController';
 
 const routes = Router();
 const storage = multer.memoryStorage();
@@ -40,6 +42,8 @@ routes.get('/user', getUserController);
 
 routes.post('/uploadDraw', uploadDrawController);
 routes.post('/uploadDrawTags', uploadDrawTagsController);
+routes.post('/updateArtwork', updateArtworkController);
+routes.post('/deleteArtwork', deleteArtworkController);
 routes.get('/draws', drawsController);
 routes.get('/draw', drawController);
 
