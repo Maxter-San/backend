@@ -6,6 +6,7 @@ export default async function drawsController(req: Request, res: Response) {
         const token = req.headers.token as any;
         const userId = req.query.userId;
         const conditions = [];
+        const filter = [];
         const limit = Number(req.query.limit) || undefined;
 
         conditions.push({
@@ -66,9 +67,23 @@ export default async function drawsController(req: Request, res: Response) {
             });
         }
 
+        if (req.query.search) {
+            filter.push(
+                {title: {contains:  req.query.search as any || undefined}},
+                {drawTag: {
+                    some: {
+                        tagName:{
+                            contains: req.query.search as any || undefined,
+                        },
+                    },
+                },},
+            );
+        }
+
         const draws = await prisma.draw.findMany({
             where: {
                 AND: conditions.length ? conditions : undefined,
+                OR: filter.length ? filter : undefined,
             },
             orderBy: {
                 creationDate: req.query.orderBy as any || undefined,
